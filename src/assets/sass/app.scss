@@ -1,0 +1,19 @@
+
+@font-face {  
+  font-family: 'Tw Cen MT';
+  src: url('../fonts/tcfont.TTF') format('opentype');
+}
+
+* {
+  font-family: Tw Cen MT;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+@import './header.scss';
+@import './home.scss';
+@import './activists.scss';
+@import './activistCard.scss';
+@import './textArea.scss';

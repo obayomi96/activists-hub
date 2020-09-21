@@ -1,0 +1,21 @@
+
+body {
+  background: #fff;
+}
+
+.home-section-div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  .home-right-side {
+    margin: 20% auto;
+    p {
+      font-size: 32px;
+      font-weight: 400;
+    }
+    div {
+      position: relative;
+      top: 64px;
+    }
+  }
+}

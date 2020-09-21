@@ -1,0 +1,43 @@
+.outer-div {
+  margin: 0;
+  .card-div {
+    background: #fff;
+    margin-left: 20px;
+    margin-top: 20px;
+    height: 320px;
+    width: 297px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    // line-height: 24px;
+    .card-inner-div {
+      width: 85%;
+      margin: 30px auto 20px auto;
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+        .img-div {
+          padding: 5px;
+          img {
+            // padding: 5px;
+            border-radius: 50%;
+          }
+        }
+      }
+      .card-name {
+        margin-top: 20px;
+      }
+      .desc-div {
+        width: 249px;
+        font-weight: 400;
+        font-size: 16px;
+        margin-top: 25px;
+      }
+      .dob-div {
+        margin-top: 25px;
+      }
+    }
+  }
+}
+
