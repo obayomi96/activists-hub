@@ -8,6 +8,7 @@ import {
   fetchActivists,
   addActivist,
 } from "../../store/actions/activistsActions";
+import PersistView from "../../utils/ActivistView";
 import Header from "../../components/Layout/Header";
 import Button from "../../components/Buttons";
 import Input from "../../components/Input";
@@ -31,6 +32,14 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
   });
 
   const selectFile = useRef();
+
+  useEffect(() => {
+    if (PersistView.setViewState() === 'list') {
+      localStorage.setItem('activist_view_state', 'list')
+    } else {
+      localStorage.setItem('activist_view_state', 'grid')
+    }
+  }, [PersistView.setViewState()])
   
   useEffect(() => {
     async function loadData() {
@@ -51,7 +60,13 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
   };
 
   const handleView = () => {
-    setListView(!listView);
+    if (PersistView.setViewState() === 'grid') {
+      setListView(!listView);
+      localStorage.setItem('activist_view_state', 'list')
+    } else {
+      setListView(!listView);
+      localStorage.setItem('activist_view_state', 'grid')
+    }
   };
 
   const triggerSelect = () => {
@@ -257,6 +272,7 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
                           placeholderText="Select activist date of birth"
                           name="dateOfBirth"
                           id="DatePicker"
+                          dateFormat="MMMM d, yyyy"
                           // value={values.dateOfBirth}
                           style={{
                             height: "55px",
@@ -341,7 +357,8 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
       </div>
       <div className="toggle-view-div">
         <div className="toggle-icons-div">
-          {listView ? (
+          {localStorage.activist_view_state === 'list' ? 
+          (
             <Grid onClick={handleView} size={30} className="grid-icon v-icon" />
           ) : (
             <List onClick={handleView} size={30} className="list-icon v-icon" />
@@ -350,7 +367,8 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
       </div>
       <div className="activists-section">
         <div className="">
-          {!listView ? (
+          {localStorage.activist_view_state === 'grid' ?
+           (
             <div className="inner-div fixed-header">
               {activistsList &&
                 activistsList.map((activist, index) => {
