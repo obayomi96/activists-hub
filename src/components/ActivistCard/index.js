@@ -35,11 +35,18 @@ const ActivistCard = ({ avatarUrl, name, desc, dob, location }) => {
 
 ActivistCard.propTypes = {
   avatarUrl: PropTypes.string,
-  clapCount: PropTypes.string,
   name: PropTypes.string,
   desc: PropTypes.string,
   dob: PropTypes.string,
   location: PropTypes.string,
+};
+
+ActivistCard.defaultProps = {
+  avatarUrl: '',
+  name: '',
+  desc: '',
+  dob: '',
+  location: '',
 };
 
 export default ActivistCard;

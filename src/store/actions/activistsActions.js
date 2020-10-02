@@ -24,7 +24,7 @@ export const addActivist = (dataValues) => async (dispatch) => {
   try {
     const data = await activistsService.addActivist(dataValues)
     if (data) {
-      dispatch({
+      return dispatch({
         type: CREATE_ACTIVIST,
         payload: data
       })

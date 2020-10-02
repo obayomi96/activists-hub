@@ -19,7 +19,6 @@ import Created from "../../assets/svgs/Created";
 
 const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) => {
   const [activistsList, setActivistsList] = useState([]);
-  const [listView, setListView] = useState(false);
   const [formModal, setFormModal] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
   const [selectedImg, setSelectedImg] = useState(false);
@@ -44,9 +43,7 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
   useEffect(() => {
     async function loadData() {
       await fetchActivists();
-      if (activists) {
-        setActivistsList(activists);
-      }
+      setActivistsList(activists && activists);
     }
     loadData();
   }, [activists]);
@@ -61,10 +58,8 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
 
   const handleView = () => {
     if (PersistView.setViewState() === 'grid') {
-      setListView(!listView);
       localStorage.setItem('activist_view_state', 'list')
     } else {
-      setListView(!listView);
       localStorage.setItem('activist_view_state', 'grid')
     }
   };
@@ -107,18 +102,24 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
       dateOfBirth,
       imageUrl,
     };
-    await addActivist(newPerson);
-    setValues({
-      person: "",
-      description: "",
-      placeOfBirth: "",
-      dateOfBirth: "",
-      imageUrl: "",
-    });
-    setActivistsList([...activistsList, singleActivist])
-    setFormModal(false);
-    setConfirmModal(true);
-  };
+    try {
+      const response = await addActivist(newPerson);
+      setValues({
+        person: "",
+        description: "",
+        placeOfBirth: "",
+        dateOfBirth: "",
+        imageUrl: "",
+      });
+      setActivistsList([...activistsList, response.payload])
+      setFormModal(false);
+      setConfirmModal(true);
+      console.log('new list', activistsList)      
+    } catch (error) {
+      if (error)
+      throw error
+    }
+  }
 
   return (
     <div className="activists-div">
@@ -127,7 +128,6 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
         <div className="sec-one-left">
           <Search size={15} className="search-icon" />
           <Input
-            value=""
             name="search"
             className="search-input"
             label=""
@@ -220,7 +220,7 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
                             />
                           </>
                         )}
-                        <span className="add-photo-tx">Add a Photo</span>
+                        <span className="add-photo-tx">{selectedImg ? 'Edit Photo' : 'Add a Photo'}</span>
                       </div>
                     </div>
                     <div className="name-input-div">
@@ -371,11 +371,11 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
            (
             <div className="inner-div fixed-header">
               {activistsList &&
-                activistsList.map((activist, index) => {
+                activistsList.map((activist) => {
                   return (
                     <ActivistCard
                       className="flex-item"
-                      key={index}
+                      key={activist.id}
                       avatarUrl={activist.imgUrl}
                       name={activist.person}
                       desc={activist.description}
@@ -422,9 +422,9 @@ const Activists = ({ activists, fetchActivists, addActivist, singleActivist }) =
                   </tr>
                 </thead>
                 {activistsList &&
-                  activistsList.map((activist, index) => {
+                  activistsList.map((activist) => {
                     return (
-                      <tbody key={index}>
+                      <tbody key={activist.id}>
                         <tr className="tr">
                           <td className="td">
                             <div
